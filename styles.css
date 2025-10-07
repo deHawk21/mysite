@@ -1,0 +1,129 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #fff;
+  color: #222;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Sections styles */
+section {
+  padding: 100px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+}
+
+/* Section background colors */
+#about {
+  background-color: #f0f0f0;
+}
+#services {
+  background-color: #e0e0e0;
+}
+#portfolio {
+  background-color: #d0d0d0;
+}
+#contact {
+  background-color: #c0c0c0;
+}
+
+h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #111;
+}
+
+p {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+/* Customer journey container styles */
+#journey {
+  max-width: 1000px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  /* Start hidden */
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+#journey.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.step {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  /* Start hidden */
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+#journey .step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade-in class for sections */
+.fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Navigation styles */
+#bottom-nav {
+  position: fixed;
+  bottom: 10px;
+  /* Remove width: 100%; */
+  display: inline-flex; /* Only as wide as content */
+  justify-content: center;
+  gap: 15px;
+  background: rgba(255,255,255,0.8);
+  padding: 10px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  /* Center it horizontally at the bottom: */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+#bottom-nav a {
+  text-decoration: none;
+  color: #222;
+  font-size: 1em;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+#bottom-nav a:hover {
+  background: #222;
+  color: #fff;
+}
