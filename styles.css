@@ -7,37 +7,57 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #fff; /* fallback background if needed */
   color: #222;
-  line-height: 1.6;
-  overflow-x: hidden;
 }
 
-/* Sections styles */
-section {
+/* Specific background for "About Us" section only */
+#about {
+  /*background-image: url('images/aboutus.jpeg'); /* Path to your image */
+  background-size: cover; /* Make it cover the entire section */
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 100px 20px;
+  min-height: 100vh; /* optional: full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Other sections */
+#services {
+  background-color: #e0e0e0; /* fallback color */
   padding: 100px 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transition: all 0.5s ease-in-out;
-  position: relative;
-}
-
-/* Section background colors */
-#about {
-  background-color: #f0f0f0;
-}
-#services {
-  background-color: #e0e0e0;
+  align-items: center;
 }
 #portfolio {
   background-color: #d0d0d0;
+  padding: 100px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 #contact {
   background-color: #c0c0c0;
+  padding: 100px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Spacing and typography styles */
 h2 {
   font-size: 2.5em;
   margin-bottom: 20px;
@@ -59,7 +79,6 @@ p {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  /* Start hidden */
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease-out, transform 1s ease-out;
@@ -74,7 +93,6 @@ p {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  /* Start hidden */
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -84,7 +102,7 @@ p {
   transform: translateY(0);
 }
 
-/* Fade-in class for sections */
+/* Fade-in effect for sections on scroll */
 .fade-in {
   opacity: 0;
   transform: translateY(50px);
@@ -99,8 +117,9 @@ p {
 #bottom-nav {
   position: fixed;
   bottom: 10px;
-  /* Remove width: 100%; */
-  display: inline-flex; /* Only as wide as content */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex; /* only as wide as content */
   justify-content: center;
   gap: 15px;
   background: rgba(255,255,255,0.8);
@@ -109,9 +128,6 @@ p {
   backdrop-filter: blur(10px);
   font-weight: bold;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  /* Center it horizontally at the bottom: */
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 999;
 }
 
@@ -126,4 +142,14 @@ p {
 #bottom-nav a:hover {
   background: #222;
   color: #fff;
+}
+
+/* Background triangles */
+canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

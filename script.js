@@ -54,3 +54,65 @@ const journeyObserver = new IntersectionObserver((entries, observer) => {
 
 // Observe journey container
 journeyObserver.observe(journey);
+
+// Moving background
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Move points
+  for (let p of points) {
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > width) p.vx *= -1;
+    if (p.y < 0 || p.y > height) p.vy *= -1;
+  }
+
+  // Draw lines and triangles
+  for (let i = 0; i < pointCount; i++) {
+    const p1 = points[i];
+
+    for (let j = i + 1; j < pointCount; j++) {
+      const p2 = points[j];
+
+      // Connect points within threshold
+      const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+      if (dist < 150) {
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw triangles connecting three points close together
+  for (let i = 0; i < pointCount; i++) {
+    const p1 = points[i];
+    for (let j = i + 1; j < pointCount; j++) {
+      const p2 = points[j];
+      for (let k = j + 1; k < pointCount; k++) {
+        const p3 = points[k];
+
+        const d1 = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        const d2 = Math.hypot(p2.x - p3.x, p2.y - p3.y);
+        const d3 = Math.hypot(p3.x - p1.x, p3.y - p1.y);
+
+        if (d1 < 150 && d2 < 150 && d3 < 150) {
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.lineTo(p3.x, p3.y);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
