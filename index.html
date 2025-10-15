@@ -1,55 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Brand & Web Design Company</title>
-<!-- Google Fonts  -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <!-- Sections -->
-  <section id="about">
-    <h2>Par Mums</h2>
-    <p>Mēs izstrādājam mājaslapas lai digitalizētu Tavu ideju un izceltos.</p>
-  </section>
-  <section id="services">
-    <h2>Pakalpojumi</h2>
-    <p>Sākot no idejām un dizaina līdz izstrādei un ilgstošam atbalstam.</p>
-    <!-- Customer journey steps (before contact) -->
-  <div id="journey">
-    <div class="step">
-      <h3>1. Skaidra ideja un mērķis</h3>
-    </div>
-    <div class="step">
-      <h3>2. Dizains kas liek izcelties</h3>
-    </div>
-    <div class="step">
-      <h3>3. Mājaslapa kā viens vesels ar Tavu uzņēmumu</h3>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webly - Web Design</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Canvas for animated background -->
+    <canvas id="background-canvas"></canvas>
+
+    <!-- Container for content cards and logo -->
+    <div id="cards-container">
+      <!-- Logo with big padding -->
+      <div id="logo-wrapper">
+        <img src="images/logo.png" alt="Company Logo" id="logo-image" />
+      </div>
+
+      <section id="about">
+        <h2>Par Mums</h2>
+        <p>
+          Mēs izstrādājam mājaslapas lai digitalizētu Tavu ideju un izceltos.
+        </p>
+      </section>
+      <section id="services">
+        <h2>Mēs piedāvājam</h2>
+        <!-- Replaced content -->
+        <div id="journey">
+  <div class="step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+      <h3>Skaidra ideja un mērķis</h3>
+      <p class="placeholder">Palīdzēsim definēt kāds būs Tava uzņēmuma digitālais veidols</p>
     </div>
   </div>
-  </section>
-  <section id="portfolio">
-    <h2>Portfolio</h2>
-    <p>Mēs esam jauni. Te drīz būs Tava mājaslapa.</p>
-  </section>
+  <div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+      <h3>Dizains kas liek izcelties</h3>
+      <p class="placeholder">Piemeklēts stils kas atspoguļo Tavu uzņēmumu</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+      <h3>Mājaslapa un Tavs uzņēmums - viens vesels</h3>
+      <p class="placeholder">Digitāla platforma kas palīdz Tavam uzņēmumam augt</p>
+    </div>
+  </div>
+</div>
+
+      </section>
+
+      <section id="portfolio">
+        <h2>Portfolio</h2>
+        <p>Mēs esam jauni. Te drīz būs Tava mājaslapa.</p>
+      </section>
+      <section id="contact">
+  <h2>Kontakti</h2>
+  
+  <form class="contact-form">
+    <div class="row">
+      <div class="form-group">
+        <label for="name">Vārds</label>
+        <input type="text" id="name" name="name" placeholder="Jūsu vārds" required />
+      </div>
+      <div class="form-group">
+        <label for="email">E-pasts</label>
+        <input type="email" id="email" name="email" placeholder="Jūsu e-pasta adrese" required />
+      </div>
+    </div>
+    <div class="form-group message-group">
+      <label for="message">Ziņa</label>
+      <textarea id="message" name="message" rows="5" placeholder="Jūsu ziņa" required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Sūtīt</button>
+  </form>
+  <div class="contact-info-card">
+  <h3>Pārdošanas vadītājs</h3>
+  <p><strong>Vārds:</strong> Gustavs Vanags</p>
+  <p><strong>E-pasts:</strong> gman@webly.com</p>
+  <p><strong>Telefons:</strong> +371 22226666</p>
+  <p><strong>Adrese:</strong> Matīsa iela 45-25, Rīga</p>
+</div>
+</section>
 
 
-  <!-- Contact section -->
-  <section id="contact">
-    <h2>Kontakti</h2>
-    <p>Sazinies ar mums lai iegūtu bezmaksas konsultāciju un mājaslapas tāmi.</p>
-  </section>
+    </div>
 
-  <!-- Navigation bar -->
-  <nav id="bottom-nav">
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#portfolio">Portfolio</a>
-    <a href="#contact">Contact</a>
-  </nav>
+    <!-- Navigation -->
+    <nav id="bottom-nav">
+      <a href="#about">Par Mums</a>
+      <a href="#services">Pakalpojumi</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Kontakti</a>
+    </nav>
 
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
