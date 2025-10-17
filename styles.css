@@ -11,25 +11,25 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #fff; /* fallback, background is canvas anyway */
+  background-color: #fff;
   color: #222;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Canvas covers entire viewport and is behind content */
+/* Canvas for animated background, covers entire viewport, behind content */
 #background-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; /* behind content */
+  z-index: 0;
 }
 
 /* Container for all content cards */
 #cards-container {
-  position: relative; /* above background */
+  position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -40,15 +40,22 @@ body {
 
 /* Style each section as a white card */
 section {
-  background: #fff;
+  background: rgba(255,255,255,0.65); /* Slight opaque background for cards */
   padding: 40px 20px;
   margin: 20px 0;
-  width: 75%; /* approximately 75% of viewport width */
-  max-width: 800px; /* prevent overly large on big screens */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 75%;
+  max-width: 800px;
   border-radius: 8px;
-  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   box-sizing: border-box;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Headers inside cards */
@@ -61,7 +68,6 @@ h2 {
 p {
   font-size: 1.2em;
   line-height: 1.4;
-  margin-bottom: 20px;
 }
 
 /* Navigation styles */
@@ -72,7 +78,7 @@ p {
   transform: translateX(-50%);
   background: rgba(255,255,255,0.8);
   padding: 10px 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   display: flex;
@@ -80,15 +86,15 @@ p {
   z-index: 2;
   font-weight: bold;
 }
+
 #bottom-nav a {
   text-decoration: none;
   color: #222;
   font-size: 1em;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: background 0.3s, color 0.3s;
 }
-
 #bottom-nav a:hover {
   background: #222;
   color: #fff;
@@ -96,16 +102,27 @@ p {
 
 /* Logo styles */
 #logo-wrapper {
-  padding: 40px 0;
+  padding: 20px 0;
   text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  max-width: 100%; /* ensure container doesn't restrict image size */
+  overflow: hidden; /* prevent overflow if any */
 }
 
+#logo-wrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 #logo-image {
-  max-width: 800px; /* Adjust as needed */
+  max-width: 100%; /* ensures it scales to container width */
   height: auto;
+  display: block; /* removes any inline spacing issues */
 }
 
-/* Style each step as a card within #journey automatically */
+
+/* Customer journey steps */
 #journey {
   display: flex;
   flex-direction: column;
@@ -114,15 +131,17 @@ p {
   margin: 0 auto;
   padding: 10px;
 }
-
 #journey .step {
+  display: flex;
+  align-items: stretch;
   background: #fff;
-  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  opacity: 0; /* start hidden for fade-in effect */
+  opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  justify-content: flex-start; /* default, aligns items to the start, optional to change */
+
 }
 
 #journey .step.visible {
@@ -130,72 +149,61 @@ p {
   transform: translateY(0);
 }
 
-#journey .step .placeholder {
-  margin-top: 10px; /* space below the heading */
-  font-family: 'Inter', sans-serif; /* or any less obvious font */
-  font-weight: 300; /* lighter weight */
-  font-size: 1em; /* smaller font size */
-  color: #777; /* soft gray color */
-  font-style: italic; /* optional: italic for subtlety */
-}
-
-.step {
-  display: flex;
-  align-items: stretch; /* Make step-number fill height */
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden;
-  height: 150px; /* set fixed height or auto for dynamic sizing */
-}
-
 .step-number {
-  background: #fff;                  /* White background for the number block */
-  color: #000;                       /* Black font color */
+  background: #fff; /* White background for the number block */
+  color: #000; /* Black font color */
   font-weight: bold;
   font-size: 4em;
   display: flex;
-  flex-direction: column;            /* Vertically stack or keep horizontal if preferred */
-  justify-content: center;           /* Center vertically inside the block */
-  align-items: center;               /* Center horizontally inside the block */
-  width: 60px;                       /* Fixed width for consistency */
-  height: 100%;                     /* Fill the entire height of the step */
-  padding: 5px;                     /* Less padding for a compact look */
+  flex-direction: column;
+  justify-content: center; /* center vertically in height */
+  align-items: center;     /* center horizontally inside its box */
+  width: 60px;
+  height: 100%;
+  padding: 5px;
+  padding-left: 17px;
+  margin-top: 10px; /* spacing above if necessary */
 }
-
 
 .step-content {
   padding: 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* align on top */
-  align-items: flex-start; /* left align text */
+  justify-content: flex-start;
+  align-items: flex-start;
   text-align: left;
 }
 
 .step-content h3 {
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 1.3em; /* smaller font size */
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 1.3em;
 }
 
+/* Placeholder text below each step for optional info */
 .step .placeholder {
+  margin-top: 10px;
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   font-size: 0.9em;
   color: #777;
   font-style: italic;
-  margin-top: 10px;
+  display: flex; /* Enable flex container */
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Optional: horizontally center if needed */
+  height: 100%; /* Fill the parent's height if needed */
 }
 
-/* Style for the contact form */
+
+
+/* Contact form styles */
 .contact-form {
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
-  background: #fff;
+  padding: 15px;
+  background: rgba(255,255,255,0.95);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: flex;
@@ -203,29 +211,45 @@ p {
   gap: 15px;
 }
 
-/* Form group styling */
+/* Layout for name and email side-by-side on larger screens, stacked on small screens */
+.row {
+  display: flex;
+  flex-direction: column; /* stack on small screens */
+  gap: 15px;
+  width: 100%;
+}
+
+/* Media query for wider screens to place name and email side by side */
+@media (min-width: 600px) {
+  .row {
+    flex-direction: row;
+  }
+}
+
+/* Form group styling, both for wide and narrow layout */
 .form-group {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
-/* Labels */
 .form-group label {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
 }
 
-/* Input fields and textarea styling */
+/* Input and textarea styling */
 input[type="text"],
 input[type="email"],
 textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 1em;
   font-family: 'Inter', sans-serif;
+  font-size: 1em;
   transition: border-color 0.2s;
 }
+
 input[type="text"]:focus,
 input[type="email"]:focus,
 textarea:focus {
@@ -233,68 +257,57 @@ textarea:focus {
   outline: none;
 }
 
-/* Submit button style */
+/* Submit button styles */
 .submit-btn {
   padding: 12px 20px;
   background-color: #222;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   font-size: 1em;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 20px;
   transition: background-color 0.3s;
 }
+
 .submit-btn:hover {
   background-color: #444;
 }
 
-/* Layout for name and email side by side */
-.row {
-  display: flex;
-  gap: 15px; /* space between the two fields */
-}
-
-.row .form-group {
-  flex: 1; /* each takes equal width */
-  display: flex;
-  flex-direction: column;
-}
-
-.message-group {
-  margin-top: 15px; /* spacing before the message textarea */
-}
-
-/* Style for the contact info card below the form (centered and spaced) */
+/* Contact info card below form */
 .contact-info-card {
-  background: #fff;
-  padding: 20px;
-  margin: 20px auto 0 auto; /* top margin 20px, horizontally centered, no bottom margin to avoid overlap */
+  background: rgba(255,255,255,0.95);
+  padding: 40px; /* match your other cards/sections padding */
+  margin-top: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 700px;
-  width: 100%; /* or 100%, but max-width controls size */
+  max-width: 600px;
+  width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+ margin-left: auto;
+  margin-right: auto;
 }
 
-/* Style headings inside the info card */
 .contact-info-card h3 {
   margin-bottom: 15px;
   font-size: 1.5em;
   font-weight: bold;
 }
 
-/* Style paragraphs inside the info card */
 .contact-info-card p {
   margin-bottom: 10px;
   line-height: 1.4;
   font-size: 1em;
 }
 
-
-
-
-
+/* Hide nav bar on small screens */
+@media (max-width: 600px) {
+  #bottom-nav {
+    display: none;
+  }
+}

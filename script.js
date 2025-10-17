@@ -1,4 +1,4 @@
-// Smooth scroll for nav links
+// Smooth scroll for navigation links
 document.querySelectorAll('#bottom-nav a').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -7,10 +7,13 @@ document.querySelectorAll('#bottom-nav a').forEach(link => {
   });
 });
 
-// Intersection observers for section fade-in
-const sections = document.querySelectorAll('section');
+/// Select all elements to animate
+const elementsToAnimate = document.querySelectorAll('section, .step, .contact-info-card');
 
-const sectionObserver = new IntersectionObserver((entries) => {
+const observerOptions = { threshold: 0.1 };
+
+// Create observer once
+const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
@@ -18,34 +21,18 @@ const sectionObserver = new IntersectionObserver((entries) => {
       entry.target.classList.remove('visible');
     }
   });
-}, { threshold: 0.1 });
-sections.forEach(section => {
-  section.classList.add('fade-in');
-  sectionObserver.observe(section);
-});
+}, observerOptions);
 
-// Animate journey container and steps
-const journey = document.getElementById('journey');
-const steps = document.querySelectorAll('.step');
+// Observe all elements
+elementsToAnimate.forEach(el => observer.observe(el));
 
-if (journey) {
-  const journeyObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        journey.classList.add('visible');
-        steps.forEach((step, index) => {
-          setTimeout(() => { step.classList.add('visible'); }, index * 300);
-        });
-      } else {
-        journey.classList.remove('visible');
-        steps.forEach(step => step.classList.remove('visible'));
-      }
-    });
-  }, { threshold: 0.2 });
-  journeyObserver.observe(journey);
+// Also observe the logo
+const logoWrapper = document.querySelector('#logo-wrapper');
+if (logoWrapper) {
+  observer.observe(logoWrapper);
 }
 
-// *** Background animation setup ***
+// Background animation setup
 const canvas = document.getElementById('background-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -61,10 +48,10 @@ window.addEventListener('resize', () => {
 canvas.width = width;
 canvas.height = height;
 
-// Generate points
+// Generate points for the moving background
 const points = [];
 const pointCount = 80;
-for (let i=0; i<pointCount; i++) {
+for (let i = 0; i < pointCount; i++) {
   points.push({
     x: Math.random() * width,
     y: Math.random() * height,
@@ -73,38 +60,39 @@ for (let i=0; i<pointCount; i++) {
   });
 }
 
-// Persistent list of lines
+// Persistent list of lines for the background
 const lines = [];
 const threshold = 250;
 
-// Helper to find a line between points (by indices)
-function getLine(i,j) {
-  return lines.find(l => (l.i===i && l.j===j) || (l.i===j && l.j===i));
+// Helper function to find a line between points by indices
+function getLine(i, j) {
+  return lines.find(l => (l.i === i && l.j === j) || (l.i === j && l.j === i));
 }
 
-// Generate initial lines based on current points
+// Function to update the lines connecting nearby points
 function updateLines() {
-  for (let i=0; i<points.length; i++) {
-    for (let j=i+1; j<points.length; j++) {
-      const p1=points[i], p2=points[j];
-      const dist=Math.hypot(p1.x - p2.x, p1.y - p2.y);
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      const p1 = points[i], p2 = points[j];
+      const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
       if (dist > threshold) {
-        const index = lines.findIndex(l => (l.i===i && l.j===j)||(l.i===j && l.j===i));
-        if (index !== -1) lines.splice(index,1);
+        const index = lines.findIndex(l => (l.i === i && l.j === j) || (l.i === j && l.j === i));
+        if (index !== -1) lines.splice(index, 1);
       } else {
-        if (!getLine(i,j)){
-          lines.push({ i, j, progress:0 });
+        if (!getLine(i, j)) {
+          lines.push({ i, j, progress: 0 });
         }
       }
     }
   }
 }
 
-// Call to initialize lines at start
+// Initialize lines based on initial points positioning
 updateLines();
 
-const lineSpeed=0.2;
+const lineSpeed = 0.2;
 
+// Animation loop for the moving background
 function animate() {
   // Move points
   for (const p of points) {
@@ -114,23 +102,19 @@ function animate() {
     if (p.y < 0 || p.y > height) p.vy *= -1;
   }
 
-  // Recompute lines based on current position
+  // Update lines based on current point positions
   updateLines();
 
-  // Clear the entire canvas
+  // Clear canvas for redrawing
   ctx.clearRect(0, 0, width, height);
 
-  // Draw lines with animated opacity
+  // Draw and animate lines
   for (const l of lines) {
-    // Sharpen the animation: increase progress
     if (l.progress < 1) {
       l.progress += lineSpeed;
       if (l.progress > 1) l.progress = 1;
     }
-
-    const p1 = points[l.i];
-    const p2 = points[l.j];
-
+    const p1 = points[l.i], p2 = points[l.j];
     ctx.strokeStyle = `rgba(0, 0, 0, ${l.progress * 0.2})`;
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -141,32 +125,6 @@ function animate() {
 
   requestAnimationFrame(animate);
 }
-// Continue animation
+
+// Start animation
 animate();
-
-// Select all steps inside #journey
-const journeySteps = document.querySelectorAll('#journey .step');
-
-const observerOptions = {
-  threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const step = entry.target;
-      const index = Array.from(journeySteps).indexOf(step);
-      // Delay animation based on index for sequential effect
-      setTimeout(() => {
-        step.classList.add('visible');
-      }, index * 300); // 300ms delay per step
-      observer.unobserve(step); // optional, or keep unobserved
-    }
-  });
-}, observerOptions);
-
-// Observe each step
-journeySteps.forEach(step => {
-  observer.observe(step);
-});
-
