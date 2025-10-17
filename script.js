@@ -128,3 +128,13 @@ function animate() {
 
 // Start animation
 animate();
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    document.getElementById('bottom-nav').style.opacity = '1';
+    document.getElementById('bottom-nav').style.visibility = 'visible';
+  } else {
+    document.getElementById('bottom-nav').style.opacity = '0';
+    document.getElementById('bottom-nav').style.visibility = 'hidden';
+  }
+});

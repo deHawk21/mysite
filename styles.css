@@ -85,6 +85,9 @@ p {
   gap: 15px;
   z-index: 2;
   font-weight: bold;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #bottom-nav a {
