@@ -49,8 +49,17 @@ canvas.width = width;
 canvas.height = height;
 
 // Generate points for the moving background
+var pointCount = 0;
+ var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Use the variable as needed
+  if (isMobile) {
+    pointCount = 20;
+  } else {
+    pointCount = 80;
+  }
 const points = [];
-const pointCount = 80;
+//const pointCount = 80;
 for (let i = 0; i < pointCount; i++) {
   points.push({
     x: Math.random() * width,
