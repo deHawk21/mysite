@@ -314,3 +314,53 @@ textarea:focus {
     display: none;
   }
 }
+
+.image-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.image-container {
+  width: 100%; /* Fill the container */
+  overflow: hidden; /* Hide overflow */
+  text-align: center;
+}
+
+.image-container img {
+  width: 100%;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 0.2; /* Default low opacity */
+}
+
+.image-container img.active {
+  opacity: 1;
+  transform: scale(1.05); /* Zoom effect for active image */
+}
+
+.image-container img.next {
+  opacity: 0.1; /* Start with low opacity */
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 10px;
+  transition: background 0.4s ease;
+}
+
+.nav-btn:hover {
+  color: rgba(38, 34, 34, 0.8);
+}
+
+.nav-btn:focus {
+  outline: none;
+}
+
+

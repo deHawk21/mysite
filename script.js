@@ -10,18 +10,32 @@ document.querySelectorAll('#bottom-nav a').forEach(link => {
 /// Select all elements to animate
 const elementsToAnimate = document.querySelectorAll('section, .step, .contact-info-card');
 
-const observerOptions = { threshold: 0.1 };
+// Store timeouts for each element
+const toggleTimeouts = new Map();
 
-// Create observer once
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
+    const target = entry.target;
+    // Clear existing timeout
+    if (toggleTimeouts.has(target)) {
+      clearTimeout(toggleTimeouts.get(target));
+    }
+
     if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+      // Add after slight delay to prevent jitter
+      const t = setTimeout(() => {
+        target.classList.add('visible');
+      }, 200); // delay in ms
+      toggleTimeouts.set(target, t);
     } else {
-      entry.target.classList.remove('visible');
+      // Remove after delay
+      const t = setTimeout(() => {
+        target.classList.remove('visible');
+      }, 200); // delay in ms
+      toggleTimeouts.set(target, t);
     }
   });
-}, observerOptions);
+});
 
 // Observe all elements
 elementsToAnimate.forEach(el => observer.observe(el));
@@ -147,3 +161,44 @@ window.addEventListener('scroll', () => {
     document.getElementById('bottom-nav').style.visibility = 'hidden';
   }
 });
+
+// Array of image URLs
+const images = [
+  'images/image1.jpeg', // Replace these with your image paths
+  'images/image2.jpeg',
+  'images/image3.jpeg',
+  // Add more as needed
+];
+
+let currentIndex = 1;
+
+// Set initial image
+const currentImage = document.getElementById('current-image');
+currentImage.src = images[currentIndex];
+currentImage.classList.add('active');
+
+function updateImage(index) {
+  currentImage.classList.remove('active');
+  
+  setTimeout(() => {
+    currentImage.classList.add('next');
+    currentImage.src = images[index];
+    
+    setTimeout(() => {
+      currentImage.classList.remove('next');
+      currentImage.classList.add('active');
+    }, 100); // Start as next before becoming active
+  }, 500); // Time should align with CSS transition to remove "active"
+}
+
+// Button click handlers
+document.getElementById('prev-btn').addEventListener('click', () => {
+  currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+  updateImage(currentIndex);
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+  updateImage(currentIndex);
+});
+
